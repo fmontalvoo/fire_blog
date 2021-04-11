@@ -6,27 +6,19 @@
   "scripts": {
     "test": "no test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jggomez/blogvideos-ucc.git"
-  },
   "keywords": [
     "blog"
   ],
-  "author": "Juan Guillermo Gómez",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jggomez/blogvideos-ucc/issues"
-  },
-  "homepage": "https://github.com/jggomez/blogvideos-ucc#readme",
+  "author": "",
+  "license": "",
+  "homepage": "",
   "devDependencies": {
-    "browser-sync": "^2.18.8",
+    "browser-sync": "^2.26.14",
     "del": "^2.2.2",
-    "gulp": "^3.9.1",
     "gulp-cache": "^0.4.6",
     "gulp-htmlmin": "^3.0.0",
-    "gulp-imagemin": "^3.2.0",
-    "gulp-minify": "0.0.15",
+    "gulp-imagemin": "^7.1.0",
+    "gulp-minify": "^3.1.0",
     "gulp-minify-css": "^1.2.4",
     "gulp-stylus": "^2.6.0",
     "gulp-useref": "^3.1.2",
