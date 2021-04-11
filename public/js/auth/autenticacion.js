@@ -47,9 +47,18 @@ class Autenticacion {
   }
 
   authCuentaGoogle() {
-    //$('#avatar').attr('src', result.user.photoURL)
-    //$('.modal').modal('close')
-    //Materialize.toast(`Bienvenido ${result.user.displayName} !! `, 4000)
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    firebase.auth().signInWithPopup(provider)
+      .then(response => {
+        $('#avatar').attr('src', response.user.photoURL)
+        $('.modal').modal('close')
+        Materialize.toast(`Bienvenido ${response.user.displayName} !! `, 4000)
+      })
+      .catch(error => {
+        console.error('Error: ', error);
+        Materialize.toast(`Error: ${error}`, 4000)
+      });
   }
 
   authCuentaFacebook() {
