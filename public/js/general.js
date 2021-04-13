@@ -15,19 +15,20 @@ $(() => {
 
   // TODO: Recibir las notificaciones cuando el usuario esta background
 
-  // TODO: Listening real time
+  const post = new Post();
+  post.consultarTodosPost();
 
   // TODO: Firebase observador del cambio de estado
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
       $('#btnInicioSesion').text('Cerrar Sesión');
       if (user.photoURL)
-        $('#avatar').attr('src', user.photoURL)
+        $('#avatar').attr('src', user.photoURL);
       else
         $('#avatar').attr('src', 'imagenes/usuario_auth.png');
     } else {
       $('#btnInicioSesion').text('Iniciar Sesión');
-      $('#avatar').attr('src', 'imagenes/usuario.png')
+      $('#avatar').attr('src', 'imagenes/usuario.png');
     }
   });
 
@@ -48,28 +49,36 @@ $(() => {
     }
 
 
-    $('#emailSesion').val('')
-    $('#passwordSesion').val('')
-    $('#modalSesion').modal('open')
+    $('#emailSesion').val('');
+    $('#passwordSesion').val('');
+    $('#modalSesion').modal('open');
   })
 
   $('#avatar').click(() => {
     firebase.auth().signOut()
       .then(() => {
-        $('#avatar').attr('src', 'imagenes/usuario.png')
-        Materialize.toast(`SignOut correcto`, 4000)
+        $('#avatar').attr('src', 'imagenes/usuario.png');
+        Materialize.toast(`SignOut correcto`, 4000);
       })
       .catch(error => {
-        Materialize.toast(`Error en SignOut ${error}`, 4000)
+        Materialize.toast(`Error en SignOut ${error}`, 4000);
       });
   })
 
   $('#btnTodoPost').click(() => {
-    $('#tituloPost').text('Posts de la Comunidad')
+    $('#tituloPost').text('Posts de la Comunidad');
+    const post = new Post();
+    post.consultarTodosPost();
   })
 
   $('#btnMisPost').click(() => {
-    //$('#tituloPost').text('Mis Posts')
-    //Materialize.toast(`Debes estar autenticado para ver tus posts`, 4000)    
+    const user = firebase.auth().currentUser;
+    if (user) {
+      $('#tituloPost').text('Mis Posts')
+      const post = new Post();
+      post.consultarPostxUsuario(user.email);
+    }
+    else
+      Materialize.toast(`Debes estar autenticado para ver tus posts`, 4000)
   })
 })

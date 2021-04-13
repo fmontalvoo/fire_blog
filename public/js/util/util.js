@@ -1,5 +1,5 @@
 class Utilidad {
-  static obtenerFecha (timeStamp) {    
+  static obtenerFecha(timeStamp) {
     const d = new Date(timeStamp)
     let month = '' + (d.getMonth() + 1)
     let day = '' + d.getDate()
@@ -9,5 +9,11 @@ class Utilidad {
     if (day.length < 2) day = '0' + day
 
     return [day, month, year].join('/')
+  }
+  static youtubeUrlParser(urlYt) {
+    const varEmbed = 'embed/'
+    const varWatch = 'watch?v='
+    let newUrlYt = urlYt.replace(varWatch, varEmbed);
+    return newUrlYt
   }
 }

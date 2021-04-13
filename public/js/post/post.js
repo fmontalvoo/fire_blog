@@ -1,23 +1,75 @@
 class Post {
-  constructor () {
-      // TODO inicializar firestore y settings
+    constructor() {
+        this.db = firebase.firestore();
+    }
 
-  }
+    crearPost(uid, emailUser, titulo, descripcion, imagenLink, videoLink) {
+        return this.db.collection('posts')
+            .add({
+                uid: uid,
+                autor: emailUser,
+                titulo: titulo,
+                descripcion: descripcion,
+                imagenLink: imagenLink,
+                videoLink: videoLink,
+                fecha: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(ref => {
+                console.log(`ID: ${ref.id}`);
+            })
+            .catch(error => console.error(`Error: ${error}`));
+    }
 
-  crearPost (uid, emailUser, titulo, descripcion, imagenLink, videoLink) {
-    
-  }
+    consultarTodosPost() {
+        this.db.collection('posts')
+            .onSnapshot(querySnapshot => {
+                $('#posts').empty();
+                if (querySnapshot.empty) {
+                    $('#posts').append(this.obtenerTemplatePostVacio());
+                } else {
+                    querySnapshot.forEach(post => {
+                        let postHtml = this.obtenerPostTemplate(
+                            post.data().autor,
+                            post.data().titulo,
+                            post.data().descripcion,
+                            Utilidad.youtubeUrlParser(post.data().videoLink),
+                            post.data().imagenLink,
+                            Utilidad.obtenerFecha(post.data().fecha.toDate())
+                        );
+                        $('#posts').append(postHtml);
+                    });
+                }
+            });
+    }
 
-  consultarTodosPost () {
-    
-  }
+    consultarPostxUsuario(emailUser) {
+        console.log(emailUser);
+        this.db.collection('posts')
+            .where('autor', '==', emailUser)
+            .get()
+            .then(querySnapshot => {
+                $('#posts').empty();
+                if (querySnapshot.empty) {
+                    $('#posts').append(this.obtenerTemplatePostVacio());
+                } else {
+                    querySnapshot.forEach(post => {
+                        let postHtml = this.obtenerPostTemplate(
+                            post.data().autor,
+                            post.data().titulo,
+                            post.data().descripcion,
+                            Utilidad.youtubeUrlParser(post.data().videoLink),
+                            post.data().imagenLink,
+                            Utilidad.obtenerFecha(post.data().fecha.toDate())
+                        );
+                        $('#posts').append(postHtml);
+                    });
+                }
+            })
+            .catch(error => console.error(`Error: ${error}`));
+    }
 
-  consultarPostxUsuario (emailUser) {
-    
-  }
-
-  obtenerTemplatePostVacio () {
-    return `<article class="post">
+    obtenerTemplatePostVacio() {
+        return `<article class="post">
       <div class="post-titulo">
           <h5>Crea el primer Post a la comunidad</h5>
       </div>
@@ -42,18 +94,18 @@ class Post {
       <div class="post-footer container">         
       </div>
   </article>`
-  }
+    }
 
-  obtenerPostTemplate (
-    autor,
-    titulo,
-    descripcion,
-    videoLink,
-    imagenLink,
-    fecha
-  ) {
-    if (imagenLink) {
-      return `<article class="post">
+    obtenerPostTemplate(
+        autor,
+        titulo,
+        descripcion,
+        videoLink,
+        imagenLink,
+        fecha
+    ) {
+        if (imagenLink) {
+            return `<article class="post">
             <div class="post-titulo">
                 <h5>${titulo}</h5>
             </div>
@@ -85,9 +137,9 @@ class Post {
                 </div>
             </div>
         </article>`
-    }
+        }
 
-    return `<article class="post">
+        return `<article class="post">
                 <div class="post-titulo">
                     <h5>${titulo}</h5>
                 </div>
@@ -120,5 +172,5 @@ class Post {
                     </div>
                 </div>
             </article>`
-  }
+    }
 }
