@@ -1,7 +1,6 @@
 $(() => {
 
     const auth = new Autenticacion();
-    //$("#authFB").click(() => );
 
     $("#btnRegistroEmail").click(() => {
         const nombres = $('#nombreContactoReg').val();
@@ -18,9 +17,11 @@ $(() => {
         auth.authEmailPass(email, password)
     });
 
-    $("#authGoogle").click(() => auth.authCuentaGoogle());
+    //$("#authFB").click(() => );
 
-    //$("#authTwitter").click(() => //AUTH con Twitter);
+    //$("#authTwitter").click(() => );
+
+    $("#authGoogle").click(() => auth.authCuentaGoogle());
 
     $('#btnRegistrarse').click(() => {
         $('#modalSesion').modal('close');
