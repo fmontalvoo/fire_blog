@@ -21,7 +21,7 @@ class Autenticacion {
         });
 
         const config = {
-          url: 'http://localhost:5500/public/index.html'
+          url: 'https://data-base-38d79.web.app/'
         };
 
         response.user.sendEmailVerification(config)
