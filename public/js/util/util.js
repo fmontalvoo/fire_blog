@@ -10,10 +10,8 @@ class Utilidad {
 
     return [day, month, year].join('/')
   }
-  static youtubeUrlParser(urlYt) {
-    const varEmbed = 'embed/'
-    const varWatch = 'watch?v='
-    let newUrlYt = urlYt.replace(varWatch, varEmbed);
-    return newUrlYt
+
+  static youtubeUrlParser(urlYt = '') {
+    return urlYt.replace('watch?v=', 'embed/')
   }
 }

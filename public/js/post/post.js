@@ -22,6 +22,8 @@ class Post {
 
     consultarTodosPost() {
         this.db.collection('posts')
+            .orderBy('fecha', 'asc')
+            .orderBy('titulo', 'asc')
             .onSnapshot(querySnapshot => {
                 $('#posts').empty();
                 if (querySnapshot.empty) {
@@ -43,8 +45,8 @@ class Post {
     }
 
     consultarPostxUsuario(emailUser) {
-        console.log(emailUser);
         this.db.collection('posts')
+            .orderBy('fecha', 'asc')
             .where('autor', '==', emailUser)
             .get()
             .then(querySnapshot => {
@@ -66,6 +68,29 @@ class Post {
                 }
             })
             .catch(error => console.error(`Error: ${error}`));
+    }
+
+    subirImagenPost(file, uid) {
+        const refStorage = firebase.storage().ref(`imgsPosts/${uid}/${file.name}`);
+        const task = refStorage.put(file);
+
+        task.on('state_changed',
+            snapshot => {
+                const porcentaje = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+                $('.determinate').attr('style', `width: ${porcentaje}%`);
+            },
+            error => {
+                Materialize.toast(`Error al subir el archivo: ${error}`, 4000)
+            },
+            () => {
+                task.snapshot.ref.getDownloadURL()
+                    .then(url => {
+                        console.info(url);
+                        sessionStorage.setItem('imgNewPost', url);
+                    })
+                    .catch(error => Materialize.toast(`Error obteniendo url: ${error}`, 4000));
+            }
+        );
     }
 
     obtenerTemplatePostVacio() {

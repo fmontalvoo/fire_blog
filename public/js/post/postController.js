@@ -56,7 +56,8 @@ $(() => {
 
     const file = e.target.files[0]
 
-    // TODO: Referencia al storage
-
+    const post = new Post();
+    const user = firebase.auth().currentUser;
+    post.subirImagenPost(file, user.uid);
   })
 })
